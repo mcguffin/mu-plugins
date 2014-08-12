@@ -16,4 +16,4 @@ Contains:
   
 *   Fix oembed URLs
    
-    *The Problem:* oEmbed some content from http://xxx.yy, watch your page with https://, content does not get displayed for security reasons.
+    *The Problem:* oEmbed some content from `http://xxx.yy`, watch your page with https://, content does not get displayed for security reasons.
