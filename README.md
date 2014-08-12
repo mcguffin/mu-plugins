@@ -17,3 +17,7 @@ Contains:
 *   Fix oembed URLs
    
     *The Problem:* oEmbed some content from `http://xxx.yy`, watch your page with https://, content does not get displayed for security reasons.
+
+*   Basic Comment Spam Trap
+   
+    *The Problem:* Comment spam. The plugin adds a honeypot input field. If this field is filled (as a spam bot would do) the comment is marked as spam.
