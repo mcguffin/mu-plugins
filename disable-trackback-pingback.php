@@ -36,7 +36,7 @@ add_filter( 'post_ping_status' , '__return_closed' );
 
 
 // set ping status closes whenever a post is saved.
-function insert_post_disable_trackbacks( $post_data , $postarr ) {
+function insert_post_disable_trackbacks( $post_data , $postarr = null ) {
 	$post_data['ping_status'] = 'closed';
 	return $post_data;
 }
