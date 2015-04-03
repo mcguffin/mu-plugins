@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Fix get_adjacent_post
-Description: Fixes WP core issue. See Ticket #8107 http://core.trac.wordpress.org/ticket/8107
+Description: Fixes WP core issue. See Tickets http://core.trac.wordpress.org/ticket/8107, https://core.trac.wordpress.org/ticket/28026
 Author: joern lund
 Author URI: http://github.org/mcguffin
 Version: 0.0.2

@@ -2,14 +2,13 @@
 
 /*
 Plugin Name: Show SQL Queries
-Description: Basic Honeypot spam protection.
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
 Version: 0.0.1
 */
 if ( defined('SAVEQUERIES') && SAVEQUERIES ) :
 	function show_queries() {
-		if ( ! defined('DOING_AJAX') && (strpos($_SERVER['SERVER_NAME'],'.local') !== false || current_user_can( 'administrator' ) )) {
+		if ( ! defined('DOING_AJAX') && current_user_can( 'administrator' ) ) {
 			global $wpdb;
 			echo "<pre style=\"padding-left:180px;background:#fff;color:#333;white-space:pre-wrap\">";
 			echo count($wpdb->queries)." Queries\n";
