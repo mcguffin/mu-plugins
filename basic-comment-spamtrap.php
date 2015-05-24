@@ -32,7 +32,7 @@ add_action('wp_head','honeypot_form_css');
 
 // add honepot field to comment form. Unsuspicius HTML
 function honeypot_field( $fields ) {
-	$fields[ HONEYPOT_FORM_FIELD ] = '<p class="comment-form-url form-field-' . HONEYPOT_FORM_FIELD . '"><label for="' . HONEYPOT_FORM_FIELD . '">' . __( ucwords(HONEYPOT_FORM_FIELD) ) . '</label> ' .
+	$fields[ HONEYPOT_FORM_FIELD ] = '<p class="comment-form-url form-field-' . HONEYPOT_FORM_FIELD . '"><label for="' . HONEYPOT_FORM_FIELD . '">' . __( ucwords(HONEYPOT_FORM_FIELD) , 'mu-plugins' ) . '</label> ' .
 		            '<input id="' . HONEYPOT_FORM_FIELD . '" name="'.HONEYPOT_FORM_FIELD.'" type="text" size="30" /></p>';
 	return $fields;
 }
