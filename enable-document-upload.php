@@ -1,6 +1,6 @@
 <?php
 
-function modify_post_mime_types( $post_mime_types ) {
+function enable_documents_upload( $post_mime_types ) {
 
     $post_mime_types['application/pdf'] = array( __( 'PDFs' ), __( 'Manage PDFs' ), _n_noop( 'PDF <span class="count">(%s)</span>', 'PDFs <span class="count">(%s)</span>' ) );
     $post_mime_types['application/vnd.openxmlformats-officedocument.presentationml.presentation'] = array( __( 'Powerpoints' ), __( 'Manage Powerpoints' ), _n_noop( 'Powerpoints <span class="count">(%s)</span>', 'Powerpoints <span class="count">(%s)</span>' ) );
@@ -10,4 +10,4 @@ function modify_post_mime_types( $post_mime_types ) {
 
 }
 
-add_filter( 'post_mime_types', 'modify_post_mime_types' );
+add_filter( 'post_mime_types', 'enable_documents_upload' );
