@@ -236,4 +236,3 @@ function polylang_post_type_term_link( $url , $language_slug ) {
 endif;
 add_filter('pll_translation_url','polylang_post_type_term_link',10,2);
 
-
