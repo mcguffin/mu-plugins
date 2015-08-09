@@ -28,7 +28,7 @@ Contains:
 
     *	`SCRIPT_DEBUG`: Disable script minification by [autoptimize plugin](https://wordpress.org/plugins/autoptimize/)
     
-    *	`SAVEQUERIES`: Dispaly SQL queries at shutdown.
+    *	`SAVEQUERIES`: Display SQL queries at shutdown.
 
 *   Disable Trackbacks
    
