@@ -19,3 +19,4 @@ function enable_documents_upload( $post_mime_types ) {
 }
 
 add_filter( 'post_mime_types', 'enable_documents_upload' );
+
