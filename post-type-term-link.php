@@ -7,7 +7,14 @@ Author URI: http://github.org/mcguffin
 Version: 0.0.1
 */
 
-if ( ! class_exists( 'CPT_Term_Archive' ) ) :
+
+/**
+ *	Usage:
+ *	
+ */
+
+
+if ( ! class_exists( 'PostType_Term_Archive' ) ) :
 
 class PostType_Term_Archive {
 	private $post_type;
@@ -181,10 +188,9 @@ class PostType_Term_Archive {
 	private function _increment_matches( $match ) {
 		return sprintf( '$matches[%d]' , $match[1]+1 );
 	}
-	
-
 }
 endif;
+
 
 /**
  * Return CPT Term archive link.
@@ -192,7 +198,7 @@ endif;
  * @param	string			$post_type	The Post Type
  * @param	int|object		$term		Term ID, term slug or Term object
  * @param	string			$taxonomy	Taxonomy name. Mandatory if $term is a slug
- * @return	string|WP_Error	The CPT term archive Link or WP_Error on failure
+ * @return	string|WP_Error	The CPT term archive Link in the format MY_WP_URL/post_type/taxonomy_slug/term_slug or WP_Error on failure
  */
 if ( ! function_exists( 'get_post_type_term_link' ) ) :
 function get_post_type_term_link( $post_type , $term , $taxonomy = '' ) {
@@ -209,7 +215,7 @@ function get_post_type_term_link( $post_type , $term , $taxonomy = '' ) {
 endif;
 
 /**
- *	Polylang Filter to get translated ppost type term links
+ *	Polylang Filter to get translated post type term links
  */
 if ( ! function_exists( 'polylang_post_type_term_link' ) ) :
 function polylang_post_type_term_link( $url , $language_slug ) {
