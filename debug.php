@@ -2,10 +2,10 @@
 
 /*
 Plugin Name: Debugging tools
-Description: 
+Description: Profiler, disable server cache, show DB queries
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
-Version: 0.0.1
+Version: 0.0.2
 */
 
 /**
