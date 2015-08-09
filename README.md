@@ -1,7 +1,10 @@
 mu-plugins
 ==========
 
-Some useful WordPress mu plugins
+Some useful WordPress mu plugins.
+
+
+*	Translation ready
 
 Contains:
 
@@ -14,6 +17,18 @@ Contains:
    
     *The Problem:* Huge images. Takes advantage of the built in plupload capability to 
     downsize images before the get uploaded.
+
+*   Debug
+    
+    Enhanced debugging mode controlled by constants set in the wp-config.php:
+    
+    *	`WP_DEBUG`: 
+    	*	Disable [Cachify](https://wordpress.org/plugins/cachify/) in the frontend (Clear server cache first!)
+    	*	Create and in it a WP_Profiler instance
+
+    *	`SCRIPT_DEBUG`: Disable script minification by [autoptimize plugin](https://wordpress.org/plugins/autoptimize/)
+    
+    *	`SAVEQUERIES`: Dispaly SQL queries at shutdown.
 
 *   Disable Trackbacks
    
@@ -45,7 +60,7 @@ Contains:
 *   Fix oembed URLs
    
     *The Problem:* oEmbed some content from `http://xxx.yy`, watch your page with 
-    https://. Content does not get displayed for security reasons. 
+    https://. Content is not displayed for security reasons. 
 
 *	PostType Term Archive
     
@@ -58,8 +73,6 @@ Contains:
     Archive URLs will be in the form `http://my-domain.tld/%post_type%/%taxonomy%/%term_slug%`.
     The Polylang plugin is also supported.
     
-*   Show Queries (debugging)
-    
-    *The Problem:* Can't see any of these beautiful SQL queries. The solution: Set 
-    the SAVEQUERIES constant in your wp-config to true and log in with an admin account.
-
+*	Fix WP Core issue #25449
+	
+	*The Problem:* `wp_upload_dir()` doesn't support https. See: https://core.trac.wordpress.org/ticket/25449
