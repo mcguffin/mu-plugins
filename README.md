@@ -1,10 +1,7 @@
 mu-plugins
 ==========
 
-Some useful WordPress mu plugins.
-
-
-*	Translation ready
+Some useful translation ready WordPress mu plugins.
 
 Contains:
 
