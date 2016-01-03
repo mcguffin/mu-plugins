@@ -1,7 +1,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PlaceHolder\n"
+"Project-Id-Version: Mu-Plugins\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2015-04-09 11:56:10+0000\n"
@@ -11,71 +11,78 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8\n"
+"X-Generator: Poedit 1.8.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;esc_attr__;esc_attr_e;esc_html__;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c;_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Textdomain-Support: yes\n"
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
-"Language: en_US\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: email-obfuscation.php:82
+
+#: email-obfuscation.php:97
 msgid "(Click to show Email Link)"
 msgstr ""
 
-#: email-obfuscation.php:87
+#: email-obfuscation.php:102
 msgid "(Click to show Email Address)"
 msgstr ""
 
-#: enable-document-upload.php:5
+#: email-obfuscation.php:106
+msgid "(Undisclosed Email Address)"
+msgstr ""
+
+#: enable-document-upload.php:13
 msgid "PDFs"
 msgstr ""
 
-#: enable-document-upload.php:5
+#: enable-document-upload.php:13
 msgid "Manage PDFs"
 msgstr ""
 
-#: enable-document-upload.php:5
+#: enable-document-upload.php:13
 #, php-format
 msgid "PDF <span class=\"count\">(%s)</span>"
 msgid_plural "PDFs <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: enable-document-upload.php:6
+#: enable-document-upload.php:14
 msgid "Presentations"
 msgstr ""
 
-#: enable-document-upload.php:6
+#: enable-document-upload.php:14
 msgid "Manage Presentations"
 msgstr ""
 
-#: enable-document-upload.php:6
+#: enable-document-upload.php:14
 #, php-format
 msgid "Powerpoints <span class=\"count\">(%s)</span>"
 msgid_plural "Powerpoints <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: enable-document-upload.php:7
+#: enable-document-upload.php:15
 msgid "Documents"
 msgstr ""
 
-#: enable-document-upload.php:7
+#: enable-document-upload.php:15
 msgid "Manage Documents"
 msgstr ""
 
-#: enable-document-upload.php:7
+#: enable-document-upload.php:15
 #, php-format
 msgid "Documents <span class=\"count\">(%s)</span>"
 msgid_plural "Documents <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: post-type-term-link.php:54 post-type-term-link.php:76
+#: post-type-term-link.php:61 post-type-term-link.php:83
 msgid "Empty Term"
 msgstr ""
 
-#: post-type-term-link.php:84
+#: post-type-term-link.php:91
 msgid "Invalid post type"
 msgstr ""

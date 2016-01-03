@@ -58,7 +58,7 @@ class PostType_Term_Archive {
 				return $taxonomy;
 		}
 		
-		return new WP_Error('invalid_term', __('Empty Term'));
+		return new WP_Error('invalid_term', __('Empty Term','mu-plugins'));
 	}
 	
 	/**
@@ -80,7 +80,7 @@ class PostType_Term_Archive {
 		}
 
 		if ( ! is_object($term) )
-			$term = new WP_Error('invalid_term', __('Empty Term'));
+			$term = new WP_Error('invalid_term', __('Empty Term','mu-plugins'));
 
 		if ( is_wp_error( $term ) )
 			return $term;
