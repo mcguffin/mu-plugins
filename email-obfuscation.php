@@ -94,16 +94,16 @@ class EmailObfuscator {
 	private function _replace_email_link( $matches ) {
 		$hash = md5($matches[0]);
 		$this->map_fragments[$hash] = $matches[0];
-		return sprintf( '<a href="#%s" data-load-fragment="%s">%s</a>' , $hash , $hash , __('(Click to show Email Link)' , 'stein-agency-mu-plugins' ) );
+		return sprintf( '<a href="#%s" data-load-fragment="%s">%s</a>' , $hash , $hash , __('(Click to show Email Link)' , 'mu-plugins' ) );
 	}
 	private function _replace_email_address( $matches ) {
 		$hash = md5($matches[0]);
 		$this->map_fragments[$hash] = $matches[0];
-		return sprintf( '<a href="#%s" data-load-fragment="%s">%s</a>' , $hash , $hash , __('(Click to show Email Address)' , 'stein-agency-mu-plugins' ) );
+		return sprintf( '<a href="#%s" data-load-fragment="%s">%s</a>' , $hash , $hash , __('(Click to show Email Address)' , 'mu-plugins' ) );
 	}
 	
 	private function _replace_email_address_head( $matches ) {
-		return __('(Undisclosed Email Address)');
+		return __('(Undisclosed Email Address)','mu-plugins');
 	}
 	
 
