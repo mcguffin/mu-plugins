@@ -5,13 +5,15 @@ Plugin Name: Email Obfuscation
 Description: Hides email addresses in the HTML code.
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
-Version: 0.0.1
+Version: 0.0.2
 */
 
 class EmailObfuscator {
 	private $map_fragments = array();
 	private static $_instance = null;
 	
+	private $pattern_email = "/[a-zA-Z0-9\.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*/s";
+	private $pattern_link = '/<a([^>]*)href=([\'"]{1})mailto:.+\/a>/imsU';
 	/**
 	 * Getting a singleton.
 	 *
@@ -42,7 +44,7 @@ class EmailObfuscator {
 	function enqueue_script() {	
 		wp_register_script( 'email-obfuscation' , plugins_url( 'email-obfuscation.js' , __FILE__ ) , array( 'jquery' )  );
 		wp_localize_script( 'email-obfuscation' , 'email_obfuscator' , array(
-			'ajax_url' => admin_url('admin-ajax.php'),
+			'ajax_url' => admin_url('admin-ajax.php',is_ssl() ? 'https' : 'http' ),
 		) );
 		wp_enqueue_script( 'email-obfuscation' );
 	}
@@ -69,22 +71,39 @@ class EmailObfuscator {
 		if ( empty( $output ) )
 			return '';
 		// source: http://www.w3.org/TR/html5/forms.html#valid-e-mail-address
-		$pattern_link = '/<a([^>]*)href=([\'"]{1})mailto:.+\/a>/imsU';
-		$pattern_email = "/[a-zA-Z0-9\.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*/s";
-		$output = preg_replace_callback( $pattern_link , array( &$this , '_replace_email_link' ) , $output );
-		$output = preg_replace_callback( $pattern_email , array( &$this , '_replace_email_address' ) , $output );
+		$output = preg_replace_callback( '@<head(.*)</head>@imsU' , array( &$this , '_filter_head' ) , $output );
+		$output = preg_replace_callback( '@<body(.*)</body>@imsU' , array( &$this , '_filter_body' ) , $output );
+		
+
+		return $output;
+	}
+	
+	private function _filter_head( $matches ){
+		$output = $matches[0];
+		$output = preg_replace_callback( $this->pattern_email , array( &$this , '_replace_email_address_head' ) , $output );
+		return $output;
+	}
+	
+	private function _filter_body( $matches ) {
+		$output = $matches[0];
+		$output = preg_replace_callback( $this->pattern_link , array( &$this , '_replace_email_link' ) , $output );
+		$output = preg_replace_callback( $this->pattern_email , array( &$this , '_replace_email_address' ) , $output );
 		return $output;
 	}
 	
 	private function _replace_email_link( $matches ) {
 		$hash = md5($matches[0]);
 		$this->map_fragments[$hash] = $matches[0];
-		return sprintf( '<a href="#%s" data-load-fragment="%s">%s</a>' , $hash , $hash , __('(Click to show Email Link)' , 'mu-plugins' ) );
+		return sprintf( '<a href="#%s" data-load-fragment="%s">%s</a>' , $hash , $hash , __('(Click to show Email Link)' , 'stein-agency-mu-plugins' ) );
 	}
 	private function _replace_email_address( $matches ) {
 		$hash = md5($matches[0]);
 		$this->map_fragments[$hash] = $matches[0];
-		return sprintf( '<a href="#%s" data-load-fragment="%s">%s</a>' , $hash , $hash , __('(Click to show Email Address)' , 'mu-plugins' ) );
+		return sprintf( '<a href="#%s" data-load-fragment="%s">%s</a>' , $hash , $hash , __('(Click to show Email Address)' , 'stein-agency-mu-plugins' ) );
+	}
+	
+	private function _replace_email_address_head( $matches ) {
+		return __('(Undisclosed Email Address)');
 	}
 	
 
