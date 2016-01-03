@@ -18,7 +18,7 @@ function adjfix_post_where( $where ) {
 	
 	$op = current_filter() == 'get_previous_post_where' ? '<' : '>';
 
-	$serach = $wpdb->prepare( "WHERE p.post_date $op %s", $post->post_date );
+	$search = $wpdb->prepare( "WHERE p.post_date $op %s", $post->post_date );
 	$replace = $wpdb->prepare("WHERE ( p.post_date $op %s OR ( p.post_date = %s AND p.ID $op %d ) ) ", $post->post_date, $post->post_date, $post_ID );
 	$where = str_replace( $search, $replace, $where );
 
