@@ -8,7 +8,7 @@ Installation:
 
 Add `--recursive` to the `git clone` command.
 
-    $ git clone --recursive git@github.com:mcguffin/wp-rainbow-hilite
+    $ git clone --recursive git@github.com:mcguffin/mu-plugins
 
 
 Contains:
