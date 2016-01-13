@@ -4,7 +4,7 @@
 Plugin Name: Client side image Resizing
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
-Version: 0.0.1
+Version: 0.0.2
 */
 
 /**
