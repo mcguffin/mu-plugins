@@ -65,12 +65,12 @@ function client_side_resize_plupload_params( $params ) {
 	$largest = array( 'width'=>0 , 'height'=>0 );
 	foreach ( $sizes as $size ) {
 		$largest['width'] = max($size['width'],$largest['width']);
-// 		$largest['height'] = max($size['height'],$largest['height']);
+ 		$largest['height'] = max($size['height'],$largest['height']);
 	}
 	$params['resize'] = array(
 		'enabled' => true,
 		'width'		=> $largest['width'],
-		'height'	=> 0, // flexible height
+		'height'	=> $largest['height'],
 		'quality'	=> 90
 	);
 	return $params;
