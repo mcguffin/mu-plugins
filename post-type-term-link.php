@@ -135,6 +135,7 @@ class PostType_Term_Archive {
 		
 		$pto = get_post_type_object( $this->post_type );
 		$taxo_obj = get_taxonomy($this->taxonomy);
+
 		$newrules = array();
 		if ( ( in_array( $this->taxonomy , $pto->taxonomies ) 
 			|| in_array( $this->post_type , $taxo_obj->object_type ) )
@@ -151,14 +152,15 @@ class PostType_Term_Archive {
 					$newrules[$new_regex] = $new_rule;
 
 				} else if ( isset( $q['post_type'] ) && $q['post_type'] === $this->post_type ) {
+					$pt_rewrite = isset($pto->rewrite['slug']) ? $pto->rewrite['slug'] : $this->post_type;
 					
 					// split regex at post type
-					@list($regex_before_pt,$regex_after_pt) = explode( "{$this->post_type}/" , $regex );
+					@list($regex_before_pt,$regex_after_pt) = explode( "{$pt_rewrite}/" , $regex );
 					// get match_index by counting braces in part before post type
 					$match_index = preg_match_all('/\([^\)]+\)/',$regex_before_pt) + 1;
 					// assemble new regex with post type and taxonomy name
-					$new_regex = $regex_before_pt . "{$this->post_type}/{$tax_rewrite_slug}/(.+?)/" . $regex_after_pt;
-				
+					$new_regex = $regex_before_pt . "{$pt_rewrite}/{$tax_rewrite_slug}/(.+?)/" . $regex_after_pt;
+
 					// split rewrite rule at post type
 					@list( $rule_before_pt , $rule_after_pt ) = explode( "post_type={$this->post_type}" , $rule );
 					// increment all $matches indices behind post type QV
@@ -175,6 +177,7 @@ class PostType_Term_Archive {
 				}
 			}
 		}
+
 		return $newrules + $rules;
 	}
 	/**
