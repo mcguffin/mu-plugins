@@ -4,15 +4,8 @@
 Plugin Name: Custom Post Type Term Archive
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
-Version: 0.0.1
+Version: 0.0.2
 */
-
-
-/**
- *	Usage:
- *	
- */
-
 
 if ( ! class_exists( 'PostType_Term_Archive' ) ) :
 
@@ -60,6 +53,7 @@ class PostType_Term_Archive {
 		
 		return new WP_Error('invalid_term', __('Empty Term','mu-plugins'));
 	}
+
 	
 	/**
 	 * Return CPT Term archive link.
@@ -118,7 +112,8 @@ class PostType_Term_Archive {
 			} else {
 				$termlink =  str_replace("%$this->taxonomy%", $slug, $termlink);
 			}
-			$archive_link = untrailingslashit( $archive_link ) . $termlink;
+			$termlink = preg_replace('/^\/?/','',$termlink);
+			$archive_link = trailingslashit( $archive_link ) . $termlink;
 		}
 		/**
 		 * Filter the Post type term link.
@@ -168,12 +163,11 @@ class PostType_Term_Archive {
 					// increment all $matches indices behind post type QV
 					$rule_after_pt = preg_replace_callback(  '/\$matches\[(\d+)\]$/' , array( $this , '_increment_matches' ) , $rule_after_pt  );
 
-
 					// assemble new rule
-					$newrules[$new_regex] = sprintf( '%spost_type=%s&%s_name=$matches[%d]%s' , 
+					$newrules[$new_regex] = sprintf( '%spost_type=%s&%s=$matches[%d]%s' , 
 											$rule_before_pt , 
 											$this->post_type , 
-											$this->taxonomy , 
+											$taxo_obj->query_var , 
 											$match_index , 
 											$rule_after_pt 
 										);
@@ -198,7 +192,7 @@ endif;
  * @param	string			$post_type	The Post Type
  * @param	int|object		$term		Term ID, term slug or Term object
  * @param	string			$taxonomy	Taxonomy name. Mandatory if $term is a slug
- * @return	string|WP_Error	The CPT term archive Link in the format MY_WP_URL/post_type/taxonomy_slug/term_slug or WP_Error on failure
+ * @return	string|WP_Error	The CPT term archive Link or WP_Error on failure
  */
 if ( ! function_exists( 'get_post_type_term_link' ) ) :
 function get_post_type_term_link( $post_type , $term , $taxonomy = '' ) {
@@ -208,14 +202,26 @@ function get_post_type_term_link( $post_type , $term , $taxonomy = '' ) {
 	
 	if ( is_wp_error( $taxonomy ) )
 		return $taxonomy;
-	
 	$inst = PostType_Term_Archive::get( $post_type , $taxonomy );
 	return $inst->get_link( $term );
 }
 endif;
 
 /**
- *	Polylang Filter to get translated post type term links
+ * Return CPT Term archive link.
+ * 
+ * @param	string			$post_type	The Post Type
+ * @param	string			$taxonomy	Taxonomy name. Mandatory if $term is a slug
+ */
+if ( ! function_exists( 'register_post_type_taxonomy' ) ) :
+function register_post_type_taxonomy( $post_type , $taxonomy ) {
+	
+	PostType_Term_Archive::get( $post_type , $taxonomy );
+}
+endif;
+
+/**
+ *	Polylang Filter to get translated ppost type term links
  */
 if ( ! function_exists( 'polylang_post_type_term_link' ) ) :
 function polylang_post_type_term_link( $url , $language_slug ) {
@@ -235,4 +241,5 @@ function polylang_post_type_term_link( $url , $language_slug ) {
 }
 endif;
 add_filter('pll_translation_url','polylang_post_type_term_link',10,2);
+
 
