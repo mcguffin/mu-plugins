@@ -27,6 +27,7 @@ class PostType_Term_Archive {
 	}
 	
 	private function __construct( $post_type , $taxonomy ) {
+				
 		$this->post_type = $post_type;
 		$this->taxonomy	= $taxonomy;
 		
@@ -215,8 +216,14 @@ endif;
  */
 if ( ! function_exists( 'register_post_type_taxonomy' ) ) :
 function register_post_type_taxonomy( $post_type , $taxonomy ) {
+	if ( ! post_type_exists( $post_type ) ) {
+		return new WP_Error('post_type_taxonomy', sprintf(__('Invalid Post Type %s','mu-plugins'), $post_type ));
+	}
+	if ( ! taxonomy_exists($taxonomy) ) {
+		return new WP_Error('post_type_taxonomy', sprintf(__('Invalid Taxonomy %s','mu-plugins'), $taxonomy ));
+	}
 	
-	PostType_Term_Archive::get( $post_type , $taxonomy );
+	return PostType_Term_Archive::get( $post_type , $taxonomy );
 }
 endif;
 
