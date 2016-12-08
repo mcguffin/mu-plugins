@@ -2,6 +2,7 @@
 
 /*
 Plugin Name: Custom Post Type Term Archive
+Description: Introduces three functions: <code>register_post_type_taxonomy( $post_type , $taxonomy )</code>, <code>get_post_type_term_link( $post_type , $term , $taxonomy = '' )</code>, <code>polylang_post_type_term_link( $url , $language_slug )</code>
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
 Version: 0.0.2

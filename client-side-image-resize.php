@@ -2,6 +2,7 @@
 
 /*
 Plugin Name: Client side image Resizing
+Description: Resize Images in the Browser before they get uploaded.
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
 Version: 0.0.2

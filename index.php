@@ -2,6 +2,7 @@
 
 /*
 Plugin Name: Load µPlugins 
+Description: Load and init mu-plugins
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
 Version: 0.0.1
@@ -20,6 +21,6 @@ add_action( 'plugins_loaded' , 'muplugins_load_textdomain' );
  */
 include dirname(__FILE__) .  '/disable-comments-mu/disable-comments-mu.php';
 add_action('widgets_init',function() {
-	include dirname(__FILE__) .  '/widgets/PostType_Taxonomy_Widget.php';
+	include_once dirname(__FILE__) .  '/widgets/PostType_Taxonomy_Widget.php';
 	register_widget( 'PostType_Taxonomy_Widget' );
 });

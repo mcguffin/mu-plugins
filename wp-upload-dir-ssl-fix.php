@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Fix WP Core issue #25449
-Plugin Description: wp_upload_dir() doesn't support https, https://core.trac.wordpress.org/ticket/25449
+Description: wp_upload_dir() doesn't support https, https://core.trac.wordpress.org/ticket/25449
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
 Version: 0.0.1
