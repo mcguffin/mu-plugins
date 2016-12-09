@@ -7,3 +7,7 @@
 .svn/
 .svnignore
 ignore-*
+
+# exclude project files
+./project.php
+./project/

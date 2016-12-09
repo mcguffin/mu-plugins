@@ -10,6 +10,11 @@ Add `--recursive` to the `git clone` command.
 
     $ git clone --recursive git@github.com:mcguffin/mu-plugins
 
+Updating:
+---------
+
+The file `project.php` and the directory `project/` are reserved for your own stuff.  
+Using these (and only these) you can safely `git pull`.
 
 Contains:
 ---------
