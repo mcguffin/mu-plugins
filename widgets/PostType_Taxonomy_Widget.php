@@ -1,7 +1,7 @@
 <?php
 
 
-
+if ( ! class_exists('PostType_Taxonomy_Widget') ) :
 class PostType_Taxonomy_Widget extends WP_Widget_Recent_Posts {
 	
 	function __construct() {
@@ -124,3 +124,4 @@ class PostType_Taxonomy_Widget extends WP_Widget_Recent_Posts {
 	
 }
 
+endif;
