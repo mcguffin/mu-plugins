@@ -5,7 +5,7 @@ Plugin Name: Custom Post Type Term Archive
 Description: Introduces three functions: <code>register_post_type_taxonomy( $post_type , $taxonomy )</code>, <code>get_post_type_term_link( $post_type , $term , $taxonomy = '' )</code>, <code>polylang_post_type_term_link( $url , $language_slug )</code>
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
-Version: 0.0.2
+Version: 0.0.3
 */
 
 if ( ! class_exists( 'PostType_Term_Archive' ) ) :
@@ -15,6 +15,10 @@ class PostType_Term_Archive {
 	private $taxonomy;
 	
 	private static $_instances = array();
+
+	public static function has( $post_type , $taxonomy ) {
+		return isset( self::$_instances[$post_type] ) && isset( self::$_instances[$post_type][$taxonomy] );
+	}
 	
 	public static function get( $post_type , $taxonomy ) {
 		if ( ! isset( self::$_instances[$post_type] ) ) {
@@ -143,8 +147,11 @@ class PostType_Term_Archive {
 			&& $taxo_obj->public && $taxo_obj->rewrite ) {
 
 			$tax_rewrite_slug = $taxo_obj->rewrite['slug'];
+
 			foreach ( $rules as $regex => $rule ) {
-				parse_str(parse_url($rule,PHP_URL_QUERY),$q);
+
+				parse_str( parse_url( $rule, PHP_URL_QUERY ), $q );
+
 				if ( $this->post_type === 'post' && isset( $q[$this->taxonomy] ) ) {
 					$match_index = preg_match_all('/\([^\)]+\)/',$regex) + 1;
 					$new_regex = $this->post_type.'/'.$regex;
@@ -153,6 +160,7 @@ class PostType_Term_Archive {
 					$newrules[$new_regex] = $new_rule;
 
 				} else if ( isset( $q['post_type'] ) && $q['post_type'] === $this->post_type ) {
+
 					$pt_rewrite = isset($pto->rewrite['slug']) ? $pto->rewrite['slug'] : $this->post_type;
 					
 					// split regex at post type
@@ -160,7 +168,7 @@ class PostType_Term_Archive {
 					// get match_index by counting braces in part before post type
 					$match_index = preg_match_all('/\([^\)]+\)/',$regex_before_pt) + 1;
 					// assemble new regex with post type and taxonomy name
-					$new_regex = $regex_before_pt . "{$pt_rewrite}/{$tax_rewrite_slug}/(.+?)/" . $regex_after_pt;
+					$new_regex = $regex_before_pt . "{$pt_rewrite}/{$tax_rewrite_slug}/([^/]+?)/" . $regex_after_pt;
 
 					// split rewrite rule at post type
 					@list( $rule_before_pt , $rule_after_pt ) = explode( "post_type={$this->post_type}" , $rule );
@@ -176,10 +184,22 @@ class PostType_Term_Archive {
 											$rule_after_pt 
 										);
 				}
+				$newrules[ $regex ] = $rule;
 			}
+		} else {
+			$newrules = $rules;
 		}
 
-		return $newrules + $rules;
+//var_dump($ret);
+		return $newrules;
+	}
+	private function _paged_to_top( $a, $b ) {
+		$a_page = strpos( $a, 'page/([0-9]{1,})/?$' ) !== false;
+		$b_page = strpos( $b, 'page/([0-9]{1,})/?$' ) !== false;
+		if ( $a_page === $b_page ) {
+			return 0;
+		}
+		return $a_page ? -1 : 1;
 	}
 	/**
 	 * @private
@@ -202,11 +222,13 @@ endif;
 if ( ! function_exists( 'get_post_type_term_link' ) ) :
 function get_post_type_term_link( $post_type , $term , $taxonomy = '' ) {
 	
-	if ( empty( $taxonomy ) )
+	if ( empty( $taxonomy ) ) {
 		$taxonomy = PostType_Term_Archive::get_term_taxonomy( $term );
+	}
 	
-	if ( is_wp_error( $taxonomy ) )
+	if ( is_wp_error( $taxonomy ) ) {
 		return $taxonomy;
+	}
 	$inst = PostType_Term_Archive::get( $post_type , $taxonomy );
 	return $inst->get_link( $term );
 }
@@ -232,6 +254,26 @@ function register_post_type_taxonomy( $post_type , $taxonomy ) {
 endif;
 
 /**
+ * Return CPT Term archive link.
+ * 
+ * @param	string			$post_type	The Post Type
+ * @param	string			$taxonomy	Taxonomy name. Mandatory if $term is a slug
+ */
+if ( ! function_exists( 'register_post_type_taxonomy' ) ) :
+function has_post_type_taxonomy( $post_type , $taxonomy ) {
+	if ( ! post_type_exists( $post_type ) ) {
+		return new WP_Error('post_type_taxonomy', sprintf(__('Invalid Post Type %s','mu-plugins'), $post_type ));
+	}
+	if ( ! taxonomy_exists($taxonomy) ) {
+		return new WP_Error('post_type_taxonomy', sprintf(__('Invalid Taxonomy %s','mu-plugins'), $taxonomy ));
+	}
+	
+	return PostType_Term_Archive::has( $post_type , $taxonomy );
+}
+endif;
+
+
+/**
  *	Polylang Filter to get translated ppost type term links
  */
 if ( ! function_exists( 'polylang_post_type_term_link' ) ) :
@@ -251,6 +293,24 @@ function polylang_post_type_term_link( $url , $language_slug ) {
 	return $url;
 }
 endif;
-add_filter('pll_translation_url','polylang_post_type_term_link',10,2);
+//add_filter('pll_translation_url','polylang_post_type_term_link',10,2);
+
+// yoast breadcrumbs
+function wpseo_post_type_taxonomy_breadcrumb_links( $links ) {
+	if ( is_post_type_archive() && is_category() || is_tag() || is_tax() ) {
+		$term = get_queried_object();
+		$links[] = array(
+			'term'	=> $term,
+		);
+	}
+	return $links;
+}
+
+add_filter( 'wpseo_breadcrumb_links', 'wpseo_post_type_taxonomy_breadcrumb_links' );
 
 
+function wpseo_post_type_taxonomy_breadcrumb_single_link( $output, $link ) {
+	return $output;
+}
+
+add_filter( 'wpseo_breadcrumb_single_link', 'wpseo_post_type_taxonomy_breadcrumb_single_link', 10, 2 );
