@@ -36,23 +36,12 @@ Contains:
     
     *	`SAVEQUERIES`: Display SQL queries at shutdown.
 
-*   **Disable Comments**
-    
-    Completely removes comment trackback and pingback functionality. 
-    
-    Submodule added from [Disable Comments for WordPress](git@github.com:solarissmoke/disable-comments-mu.git)
-  
 *   **Email obfuscation**
    
     *The Problem:* Email address harvesting. The solution: will replace all email links on 
     your site with a placeholder link and load Email addresses with javascript half a second 
     later.
   
-*   **Enable Document Upload**
-   
-    *The Problem:* Can't upload PDFs, and Office documents. The Solution: Enables upload 
-    for PDF files, Text documents and presentations (OpenOffice and MS Office).
-    
 *   **Fix get_adjacent_post**
    
     *The Problem:* next_post_link / previous_posts_links don't work properly for posts 

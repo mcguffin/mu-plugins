@@ -5,7 +5,7 @@ Plugin Name: Load µPlugins
 Description: Load and init mu-plugins
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
-Version: 0.0.1
+Version: 0.0.2
 */
 
 function muplugins_load_textdomain() { 

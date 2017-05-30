@@ -12,6 +12,8 @@
 	}
 	$(document).one('click','[data-load-fragment]',load_fragments)
 	$(document).ready(function(){
-		setTimeout(load_fragments,500);
+		if ( $('[data-load-fragment]').length ) {
+			setTimeout(load_fragments,500);
+		}
 	});
 })(jQuery);
