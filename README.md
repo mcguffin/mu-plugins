@@ -37,11 +37,11 @@ Contains:
     *	`SAVEQUERIES`: Display SQL queries at shutdown.
 
 *   **Email obfuscation**
-   
+
     *The Problem:* Email address harvesting. The solution: will replace all email links on 
     your site with a placeholder link and load Email addresses with javascript half a second 
     later.
-  
+
 *   **Fix get_adjacent_post**
    
     *The Problem:* next_post_link / previous_posts_links don't work properly for posts 
@@ -49,11 +49,6 @@ Contains:
     corresponding database queries by adding the post ID as a second sort column.
     
     http://core.trac.wordpress.org/ticket/8107, https://core.trac.wordpress.org/ticket/28026
-  
-*   **Fix oembed URLs**
-   
-    *The Problem:* oEmbed some content from `http://xxx.yy`, watch your page with 
-    https://. Content is not displayed for security reasons. 
 
 *	**PostType Term Archive**
     
