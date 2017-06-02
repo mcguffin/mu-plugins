@@ -28,14 +28,17 @@ Contains:
 *   **Debug**
     
     Enhanced debugging mode controlled by constants set in the wp-config.php:
-    
+
     *	`WP_DEBUG`: 
     	*	Disable [Cachify](https://wordpress.org/plugins/cachify/) in the frontend (Clear server cache first!)
     	*	Create and init a WP_Profiler instance
+    	*	Profiler Usage: `WP_Profiler::log( 'Something happened!' );` and `WP_Profiler::dump();`
 
     *	`SCRIPT_DEBUG`: Disable script minification by [autoptimize plugin](https://wordpress.org/plugins/autoptimize/)
     
     *	`SAVEQUERIES`: Display SQL queries at shutdown.
+    
+    
 
 *   **Email obfuscation**
 
