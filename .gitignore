@@ -9,5 +9,5 @@
 ignore-*
 
 # exclude project files
-./project.php
-./project/
+/project.php
+/project/
