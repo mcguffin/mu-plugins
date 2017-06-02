@@ -10,11 +10,12 @@ Add `--recursive` to the `git clone` command.
 
     $ git clone --recursive git@github.com:mcguffin/mu-plugins
 
-Updating:
----------
+Customizing:
+------------
 
-The file `project.php` and the directory `project/` are reserved for your own stuff.  
-Using these (and only these) you can safely `git pull`.
+Add a file `project.php` and a directory named `project/` in case you want to add your 
+own code. These files are .gitignore‘d, so you can safely `git pull`.
+
 
 Contains:
 ---------
@@ -50,17 +51,7 @@ Contains:
     
     http://core.trac.wordpress.org/ticket/8107, https://core.trac.wordpress.org/ticket/28026
 
-*	**PostType Term Archive**
-    
-    *The Problem:* Custom Post types do not have taxonomy archives. The solution: 
 
-    *  Call `PostType_Term_Archive::get( $post_type , $taxonomy_slug );` on WP init. 
-    *  Set your permalink settings to `http://my-domain.tld/%postname%/`.
-    *  Generate a post type term link through `get_post_type_term_link( $post_type , $term , $taxonomy )`.
-
-    Archive URLs will be in the form `http://my-domain.tld/%post_type%/%taxonomy%/%term_slug%`.
-    The Polylang plugin is also supported.
-    
 *	**Fix WP Core issue #25449**
 	
 	*The Problem:* `wp_upload_dir()` doesn't support https. See: https://core.trac.wordpress.org/ticket/25449
