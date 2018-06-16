@@ -5,7 +5,7 @@ Plugin Name: Email Obfuscation
 Description: Hides email addresses in the HTML code.
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
-Version: 0.0.4
+Version: 0.1.0
 */
 
 class EmailObfuscator {
@@ -20,8 +20,12 @@ class EmailObfuscator {
 	 * @return object single instance of SteinPostTypeJob
 	 */
 	public static function instance() {
-		if ( is_null( self::$_instance ) )
+
+		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self();
+
+		}
+
 		return self::$_instance;
 	}
 
@@ -29,16 +33,27 @@ class EmailObfuscator {
 	 * Private constructor
 	 */
 	private function __construct() {
-		$this->cachepath = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'cache'. DIRECTORY_SEPARATOR .'email-obfuscation';
-		if ( ! is_admin() && ! is_customize_preview() ) {
+		add_action('init',array($this,'init'));
+
+	}
+
+	/**
+	 *	@action init
+	 */
+	public function init() {
+
+		if ( ! is_admin() && ! is_customize_preview() && ! wp_get_current_user()->ID ) {
+
 			add_action( 'wp_head' , array( &$this, 'enqueue_script' ) );
 			add_action( 'template_redirect' , array( &$this , 'start_output' ) , 1 );
 			add_action( 'shutdown' , array( &$this , 'store_fragments' ) , 99 , 0 );
-		} else {
 
 		}
-		add_action( 'wp_ajax_get_email_fragments' , array( &$this , 'ajax_get_fragments' ) );
-		add_action( 'wp_ajax_nopriv_get_email_fragments' , array( &$this , 'ajax_get_fragments' ) );
+		if ( defined( 'DOING_AJAX' ) ) {
+			add_action( 'wp_ajax_get_email_fragments' , array( &$this , 'ajax_get_fragments' ) );
+			add_action( 'wp_ajax_nopriv_get_email_fragments' , array( &$this , 'ajax_get_fragments' ) );
+		}
+
 	}
 
 
@@ -58,10 +73,10 @@ class EmailObfuscator {
 	 *	@action wp_ajax_nopriv_get_email_fragments
 	 */
 	function ajax_get_fragments( ) {
-		$file = $this->_get_cache_file( $_SERVER['HTTP_REFERER'] );
+		$key = $this->_get_cache_key( $_SERVER['HTTP_REFERER'] );
 		header('Content-Type: application/json');
-		if ( file_exists( $file ) ) {
-			echo file_get_contents( $file );
+		if ( $result = get_transient( $key ) ) {
+			echo $result;
 		}
 		exit();
 	}
@@ -70,10 +85,7 @@ class EmailObfuscator {
 	 *	@action shutdown
 	 */
 	function store_fragments() {
-		if ( ! wp_mkdir_p( $this->cachepath ) ) {
-			wp_die('Can\'t write to cache dir');
-		}
-		file_put_contents( $this->_get_cache_file() , json_encode( $this->map_fragments ) );
+		set_transient( $this->_get_cache_key(), json_encode( $this->map_fragments ), 3600 );
 	}
 
 	/**
@@ -169,9 +181,8 @@ class EmailObfuscator {
 	 *	@param string $url
 	 *	@return string  filepath
 	 */
-	private function _get_cache_file( $url = null ) {
-
-		return $this->cachepath . DIRECTORY_SEPARATOR . $this->_get_hash( $url ) . '.json';
+	private function _get_cache_key( $url = null ) {
+		return $this->_get_hash( $url );
 	}
 
 	/**
@@ -188,20 +199,6 @@ class EmailObfuscator {
 	}
 
 
-	/**
-	 *	@return null
-	 */
-	function install() {
-		if ( ! wp_mkdir_p( $this->cachepath ) ) {
-			wp_die('Cannot write to cache dir');
-		}
-
-		$htaccess = $this->cachepath . DIRECTORY_SEPARATOR.'.htaccess';
-
-		if ( ! file_exists( $htaccess ) && ! file_put_contents( $htaccess , 'deny from all'."\n" ) ) {
-			wp_die('Cannot create .htaccess in cache dir');
-		}
-	}
 }
 
 EmailObfuscator::instance();
