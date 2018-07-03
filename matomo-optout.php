@@ -17,10 +17,12 @@ function get_matomo_optout_iframe_html( $attr ) {
 		'fontColor'			=> 'fontcolor',
 		'fontSize'			=> 'fontsize',
 		'fontFamily'		=> 'fontfamily',
+		'idsite'			=> 'idsite',
 	);
 	$qargs = array(
-		'module' => 'CoreAdminHome',
-		'action' => 'optOut',
+		'module' 	=> 'CoreAdminHome',
+		'action' 	=> 'optOut',
+		'language'	=> substr(get_bloginfo('language'),0,2),
 	);
 	foreach ( $map_attr as $key => $key_lc ) {
 		if ( isset( $attr[ $key_lc ] ) ) {
