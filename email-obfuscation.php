@@ -163,7 +163,7 @@ class EmailObfuscator {
 		$hash = md5( $email );
 
 		$this->map_fragments[$hash] = $email;
-		return $before . sprintf( '<a href="#%s" data-load-fragment="%s">%s</a>' , $hash , $hash , __('(Click to show Email Address)' , 'mu-plugins' ) );
+		return $before . sprintf( '<span data-load-fragment="%s">%s</span>' , $hash , __('(Click to show Email Address)' , 'mu-plugins' ) );
 	}
 
 	/**
