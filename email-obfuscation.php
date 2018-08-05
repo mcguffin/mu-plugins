@@ -44,14 +44,14 @@ class EmailObfuscator {
 
 		if ( ! is_admin() && ! is_customize_preview() && ! wp_get_current_user()->ID ) {
 
-			add_action( 'wp_head' , array( &$this, 'enqueue_script' ) );
-			add_action( 'template_redirect' , array( &$this , 'start_output' ) , 1 );
-			add_action( 'shutdown' , array( &$this , 'store_fragments' ) , 99 , 0 );
+			add_action( 'wp_head' , array( $this, 'enqueue_script' ) );
+			add_action( 'template_redirect' , array( $this , 'start_output' ) , 1 );
+			add_action( 'shutdown' , array( $this , 'store_fragments' ) , 99 , 0 );
 
 		}
 		if ( defined( 'DOING_AJAX' ) ) {
-			add_action( 'wp_ajax_get_email_fragments' , array( &$this , 'ajax_get_fragments' ) );
-			add_action( 'wp_ajax_nopriv_get_email_fragments' , array( &$this , 'ajax_get_fragments' ) );
+			add_action( 'wp_ajax_get_email_fragments' , array( $this , 'ajax_get_fragments' ) );
+			add_action( 'wp_ajax_nopriv_get_email_fragments' , array( $this , 'ajax_get_fragments' ) );
 		}
 
 	}
@@ -75,8 +75,9 @@ class EmailObfuscator {
 	function ajax_get_fragments( ) {
 		$key = $this->_get_cache_key( $_SERVER['HTTP_REFERER'] );
 		header('Content-Type: application/json');
-		if ( $result = get_transient( $key ) ) {
+		if ( $result = get_option( $key ) ) {
 			echo $result;
+			exit();
 		}
 		exit();
 	}
@@ -85,14 +86,14 @@ class EmailObfuscator {
 	 *	@action shutdown
 	 */
 	function store_fragments() {
-		set_transient( $this->_get_cache_key(), json_encode( $this->map_fragments ), 3600 );
+		update_option( $this->_get_cache_key( $_SERVER['REQUEST_URI'] ), json_encode( $this->map_fragments ) );
 	}
 
 	/**
 	 *	@action template_redirect
 	 */
 	function start_output( ) {
-		ob_start( array( &$this , 'filter_output' ) );
+		ob_start( array( $this, 'filter_output' ) );
 	}
 
 	/**
@@ -104,8 +105,8 @@ class EmailObfuscator {
 			return '';
 		}
 		// source: http://www.w3.org/TR/html5/forms.html#valid-e-mail-address
-		$output = preg_replace_callback( '@<head(.*)</head>@imsU' , array( &$this , '_filter_head' ) , $output );
-		$output = preg_replace_callback( '@<body(.*)</body>@imsU' , array( &$this , '_filter_body' ) , $output );
+		$output = preg_replace_callback( '@<head(.*)</head>@imsU' , array( $this, '_filter_head' ) , $output );
+		$output = preg_replace_callback( '@<body(.*)</body>@imsU' , array( $this, '_filter_body' ) , $output );
 
 
 		return $output;
@@ -119,7 +120,7 @@ class EmailObfuscator {
 	 */
 	private function _filter_head( $matches ){
 		$output = $matches[0];
-		$output = preg_replace_callback( $this->pattern_email , array( &$this , '_replace_email_address_head' ) , $output );
+		$output = preg_replace_callback( $this->pattern_email , array( $this, '_replace_email_address_head' ) , $output );
 		return $output;
 	}
 
@@ -131,8 +132,8 @@ class EmailObfuscator {
 	 */
 	private function _filter_body( $matches ) {
 		$output = $matches[0];
-		$output = preg_replace_callback( $this->pattern_link , array( &$this , '_replace_email_link' ) , $output );
-		$output = preg_replace_callback( $this->pattern_email , array( &$this , '_replace_email_address' ) , $output );
+		$output = preg_replace_callback( $this->pattern_link , array( $this , '_replace_email_link' ) , $output );
+		$output = preg_replace_callback( $this->pattern_email , array( $this , '_replace_email_address' ) , $output );
 		return $output;
 	}
 
@@ -181,21 +182,10 @@ class EmailObfuscator {
 	 *	@param string $url
 	 *	@return string  filepath
 	 */
-	private function _get_cache_key( $url = null ) {
-		return $this->_get_hash( $url );
-	}
+	private function _get_cache_key( $url ) {
 
-	/**
-	 *	@param string $url if empty current request is used
-	 *	@return string  url hash
-	 */
-	private function _get_hash( $url = '' ) {
-		// make sure to get rid of the port part in $_SERVER['HTTP_HOST']
-		if ( empty( $url ) ) {
-			$url = $_SERVER['REQUEST_URI'];
-		}
 		$hash_url = ( parse_url($url, PHP_URL_PATH) . '?' . parse_url( $url, PHP_URL_QUERY ) );
-		return md5( $hash_url . NONCE_SALT );
+		return '_email_obfus_' . md5( $hash_url . NONCE_SALT );
 	}
 
 
