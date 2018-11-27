@@ -43,7 +43,7 @@ class ClientSideImageResize {
 	public function enqueue_scripts() {
 		wp_enqueue_script( 'client-resize' , plugins_url( 'client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.3' );
 		wp_localize_script( 'client-resize' , 'client_resize' , array(
-			'plupload' => client_side_resize_plupload_params( array() )
+			'plupload' => $this->plupload_params( array() )
 		) );
 	}
 
