@@ -32,10 +32,10 @@ function get_image_sizes( $size = '' ) {
 
 		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
 
-			$sizes[ $_size ] = array( 
-			'width' => $_wp_additional_image_sizes[ $_size ]['width'],
-			'height' => $_wp_additional_image_sizes[ $_size ]['height'],
-			'crop' =>  $_wp_additional_image_sizes[ $_size ]['crop']
+			$sizes[ $_size ] = array(
+				'width' => $_wp_additional_image_sizes[ $_size ]['width'],
+				'height' => $_wp_additional_image_sizes[ $_size ]['height'],
+				'crop' =>  $_wp_additional_image_sizes[ $_size ]['crop']
 			);
 
 		}
@@ -65,13 +65,18 @@ function client_side_resize_plupload_params( $params ) {
 	$sizes = get_image_sizes();
 	$largest = array( 'width'=>0 , 'height'=>0 );
 	foreach ( $sizes as $size ) {
-		$largest['width'] = max($size['width'],$largest['width']);
- 		$largest['height'] = max($size['height'],$largest['height']);
+		$h = intval( $size['height'] );
+		$w = intval( $size['width'] );
+		if ( ! $h ) {
+			$h = $w * 1.5; // use 2:3 regular photo ratio
+		}
+		$largest['width'] = max( $w, $largest['width'] );
+ 		$largest['height'] = max( $h, intval($largest['height'] ) );
 	}
 	$params['resize'] = array(
 		'enabled' => true,
-		'width'		=> $largest['width'],
-		'height'	=> $largest['height'],
+		'width'		=> intval( $largest['width'] ),
+		'height'	=> intval( $largest['height'] ),
 		'quality'	=> 90
 	);
 	return $params;
@@ -85,8 +90,8 @@ This one is for the js media library
 
 function client_side_resize_load() {
 	wp_enqueue_script( 'client-resize' , plugins_url( 'client-side-image-resize.js' , __FILE__ ) , array('media-editor' ) , '0.0.1' );
-	wp_localize_script( 'client-resize' , 'client_resize' , array( 
-		'plupload' => client_side_resize_plupload_params( array() ) 
+	wp_localize_script( 'client-resize' , 'client_resize' , array(
+		'plupload' => client_side_resize_plupload_params( array() )
 	) );
 }
 
