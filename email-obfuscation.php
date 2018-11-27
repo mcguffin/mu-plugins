@@ -5,7 +5,7 @@ Plugin Name: Email Obfuscation
 Description: Hides email addresses in the HTML code.
 Author: Jörn Lund
 Author URI: http://github.org/mcguffin
-Version: 0.1.0
+Version: 0.1.1
 */
 
 class EmailObfuscator {
@@ -61,7 +61,7 @@ class EmailObfuscator {
 	 *	@action wp_head
 	 */
 	function enqueue_script() {
-		wp_register_script( 'email-obfuscation' , plugins_url( 'email-obfuscation.js' , __FILE__ ) , array( 'jquery' )  );
+		wp_register_script( 'email-obfuscation' , plugins_url( 'email-obfuscation.js' , __FILE__ ) , array( 'jquery' ), '0.1.1', true );
 		wp_localize_script( 'email-obfuscation' , 'email_obfuscator' , array(
 			'ajax_url' => admin_url('admin-ajax.php',is_ssl() ? 'https' : 'http' ),
 		) );
