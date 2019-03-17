@@ -102,6 +102,7 @@ if ( defined('SAVEQUERIES') && SAVEQUERIES ) :
 	function show_queries() {
 		if (  defined('WP_DEBUG') && WP_DEBUG &&
 			! defined('DOING_AJAX') &&
+			( ! defined('REST_REQUEST') || ! REST_REQUEST ) &&
 			(strpos($_SERVER['SERVER_NAME'],'.local') !== false || current_user_can( 'administrator' ) )) {
 			global $wpdb;
 			echo "<pre style=\"padding-left:180px;background:#fff;color:#333;white-space:pre-wrap\">";
